@@ -1,38 +1,31 @@
-import React,  {useEffect} from 'react';
+import React,  {useEffect, useState} from 'react';
 import './App.css';
-import axios from 'axios';
-import CurrentCurrency from './CurrentCurrency';
+import CurrencyContainer from './CurrencyContainer'
+
+const RATES_URL= 'https://api.vatcomply.com/rates/ HTTP/1.1' 
+
+function App (){
+ // const [moines1, setMonies1] = useState([]);
+ // const [Moines2, setMonies2] = useState(1);
+  const [currencyOptions, setCurrencyOptions] = useState([])
 
 
 
+  // api url
+ // const [data, setData] = useState([]);
 
 
-// api url
-
-
-
-const getInfo = () => {
-axios.get('https://api.vatcomply.com/rates/ HTTP/1.1' &&	'https://api.vatcomply.com/currencies HTTP/1.1')
-  const info = response.data
-  console.log(info)
-
-  useEffect(()=>{
-    getInfo()
-  },)
-
-}
+useEffect(()=>{
+    fetch(RATES_URL)
+    .then(res => res.json())
+    .then(data => {
+  setCurrencyOptions([data.base, ...Object.keys(data.rates)])
+    })
 
 
 
-
-
-
-
-
-
-
-
-
+  })
+ 
 
 
 // need if else statement for current currency and converted currency
@@ -41,18 +34,16 @@ axios.get('https://api.vatcomply.com/rates/ HTTP/1.1' &&	'https://api.vatcomply.
 // use states for both conversions
 
 
-
-
-
-function App() {
-  return (
+// two containers for conversions and currency select
+return(
 <>
-<h1>Currency Conversion</h1>
-<CurrentCurrency />
-
-
+    <h1>Convert</h1>
+    <CurrencyContainer currencyOptions={currencyOptions} /> = <CurrencyContainer currencyOptions={currencyOptions} />
 </>
-  );
+
+
+
+);
 }
 
 export default App;
